@@ -14,9 +14,9 @@ app = Flask(__name__)
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    req = request.get_json(silent=True,force=True)
+    req = request.get_json(silent=True, force=True)
     print(json.dumps(req, indent=4))
-    r= make_response(res)
+    r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
 
@@ -25,7 +25,7 @@ def makeResponse(req):
     parameters = result.get("parameters")
     city = parameters.get("geo-city")
     date = parameters.get("date")
-    r = requests.get('https://michelin-digital-prod.apigee.net/search/v2'+city+'&appid=731814cd02f9d71cfb5ed382c4342c88')
+    r=requests.get('http://api.openweathermap.org/data/2.5/forecast?q='+city+'&appid=731814cd02f9d71cfb5ed382c4342c88')
     json_object = r.json()
 	weather=json_object['list']
 	for i in range(0,30):
@@ -41,7 +41,7 @@ def makeResponse(req):
     
     
     if __name__ == '__main__':
-        port = int(os.getenv('PORT',5000))
+        port = int(os.getenv('PORT', 5000))
         print("Starting app on port %d" % port)
         app.run(debug=False, port=port, host='0.0.0.0')
 
